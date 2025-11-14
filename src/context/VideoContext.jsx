@@ -19,8 +19,7 @@ export function VideoProvider({ children }) {
   const [segments, setSegments] = useState([]);
   const [newVideoLink, setNewVideoLink] = useState(""); 
   const [sheetId, setSheetId] = useState(""); 
-  const [backendUrl, setBackendUrl] = useState("https://audioenhancerapi.realtyai.in")
-
+  const [backendUrl, setBackendUrl] = useState("https://elastic.aiplanet.tech")
   const handleVideoUpload = (file) => {
     try {
       setVideoFile(file)
