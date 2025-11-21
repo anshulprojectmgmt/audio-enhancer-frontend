@@ -71,23 +71,51 @@ export function VideoProvider({ children }) {
     }
   }
 
+  // const refreshVoiceover = async () => {
+  //   try {
+  //     setVoiceoverProcessing(true)
+  //     setVoiceoverApplied(false)
+  //     setError(null)
+      
+  //     const refreshRes = await axios.post(`${backendUrl}/refresh-voiceover?sheetId=${sheetId}`);
+  //     setProcessedVideoUrl(refreshRes.data.Final_s3_url);
+      
+  //     setVoiceoverApplied(true)
+  //     setVoiceoverProcessing(false)
+  //   } catch (err) {
+  //     setVoiceoverProcessing(false)
+  //     setError('Error refreshing voiceover: ' + err.message)
+  //     console.error(err)
+  //   }
+  // }
   const refreshVoiceover = async () => {
-    try {
-      setVoiceoverProcessing(true)
-      setVoiceoverApplied(false)
-      setError(null)
-      
-      const refreshRes = await axios.post(`${backendUrl}/refresh-voiceover?sheetId=${sheetId}`);
-      setProcessedVideoUrl(refreshRes.data.Final_s3_url);
-      
-      setVoiceoverApplied(true)
-      setVoiceoverProcessing(false)
-    } catch (err) {
-      setVoiceoverProcessing(false)
+  try {
+    setVoiceoverProcessing(true)
+    setVoiceoverApplied(false)
+    setError(null)
+    
+    // Show initial loading state
+    setError('Processing started... This may take 2-3 minutes.')
+    
+    const refreshRes = await axios.post(`${backendUrl}/refresh-voiceover?sheetId=${sheetId}`, {}, {
+      timeout: 300000 // 5 minutes timeout
+    });
+    
+    setProcessedVideoUrl(refreshRes.data.Final_s3_url);
+    setError(null) // Clear any loading messages
+    
+    setVoiceoverApplied(true)
+    setVoiceoverProcessing(false)
+  } catch (err) {
+    setVoiceoverProcessing(false)
+    if (err.code === 'ECONNABORTED') {
+      setError('Request timed out. The video is still processing on the server.')
+    } else {
       setError('Error refreshing voiceover: ' + err.message)
-      console.error(err)
     }
+    console.error(err)
   }
+}
 
   const resetAll = () => {
     if (videoUrl) {
