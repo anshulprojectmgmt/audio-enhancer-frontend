@@ -98,7 +98,7 @@ export function VideoProvider({ children }) {
     setError('Processing started... This may take 2-3 minutes.')
     
     const refreshRes = await axios.post(`${backendUrl}/refresh-voiceover?sheetId=${sheetId}`, {}, {
-      timeout: 300000 // 5 minutes timeout
+      timeout: 600000 // 5 minutes timeout
     });
     
     setProcessedVideoUrl(refreshRes.data.Final_s3_url);
