@@ -1,4 +1,4 @@
-.results-page {
+/* .results-page {
   display: flex;
   flex-direction: column;
   max-width: 1000px;
@@ -77,4 +77,254 @@
   .page-header.with-back {
     margin-bottom: var(--space-4);
   }
+} */
+
+
+/* --- PAGE CONTAINER --- */
+.results-page {
+  max-width: 1400px; /* Wider to fit side-by-side view */
+  margin: 0 auto;
+  padding: var(--space-3);
+  height: calc(100vh - 80px); /* Fill screen height minus header */
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- HEADER --- */
+.page-header.with-back {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.back-button:hover {
+  color: var(--color-primary);
+}
+
+/* --- MAIN EDITOR LAYOUT (GRID) --- */
+.editor-layout {
+  display: grid;
+  grid-template-columns: 450px 1fr; /* Fixed width control panel, flexible video */
+  gap: var(--space-4);
+  flex: 1;
+  min-height: 0; /* Important for scrolling inside flex items */
+}
+
+/* --- LEFT PANEL: CONTROL CENTER --- */
+.editor-left-panel {
+  background-color: #1e1e1e; /* Dark Editor Background */
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid #333;
+}
+
+/* --- TABS --- */
+.editor-tabs {
+  display: flex;
+  background-color: #252525;
+  padding: 8px 8px 0;
+  border-bottom: 1px solid #333;
+  gap: 4px;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 6px 6px 0 0;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover:not(.disabled) {
+  color: #fff;
+  background-color: #333;
+}
+
+.tab-btn.active {
+  background-color: #1e1e1e; /* Matches panel body */
+  color: #fff;
+  border-top: 2px solid var(--color-primary);
+}
+
+.tab-btn.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* --- TAB CONTENT AREA --- */
+.tab-content {
+  flex: 1;
+  overflow-y: auto; /* Scroll inside the panel, not the whole page */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- SCRIPT TAB STYLES --- */
+.script-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--space-3);
+  color: #fff;
+}
+
+.panel-header h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.panel-header p {
+  color: #888;
+  font-size: 0.85rem;
+  margin-bottom: var(--space-3);
+}
+
+/* The Transcript Viewer (Your existing component needs to fit here) */
+.script-container .transcript-viewer {
+  flex: 1;
+  min-height: 200px;
+  background: #fff; /* Keep sheet white */
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-3);
+  overflow: hidden;
+}
+
+/* Action Buttons Area (Bottom of Script Tab) */
+.action-area {
+  margin-top: auto;
+  padding-top: var(--space-3);
+  border-top: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-action {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.1s;
+}
+
+.btn-action.primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-action.primary:active {
+  transform: scale(0.98);
+}
+
+.btn-action.processing {
+  background-color: #333;
+  color: #aaa;
+  cursor: wait;
+}
+
+.spinner-small {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #555;
+  border-top: 2px solid #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.success-tag {
+  background: rgba(52, 199, 89, 0.2);
+  color: #4ade80;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-left: 10px;
+}
+
+/* --- RIGHT PANEL: VIDEO PREVIEW --- */
+.editor-right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  justify-content: center; /* Center video vertically */
+}
+
+.video-wrapper {
+  background: #000;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  aspect-ratio: 16/9; /* Enforce standard video ratio */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.video-info p {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 1024px) {
+  .editor-layout {
+    grid-template-columns: 1fr; /* Stack vertically */
+    height: auto; /* Allow scrolling on tablet/mobile */
+  }
+
+  .editor-left-panel {
+    min-height: 500px; /* Give enough space for script editor on mobile */
+    order: 2; /* Put controls below video on mobile */
+  }
+
+  .editor-right-panel {
+    order: 1; /* Video on top */
+  }
+  
+  .results-page {
+    height: auto;
+    padding-bottom: 40px;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
