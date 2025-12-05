@@ -117,15 +117,13 @@
 
 // export default ResultsPage
 
-
-
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FiArrowLeft, FiEdit3, FiMic, FiUser, FiZoomIn } from 'react-icons/fi' 
+import { FiArrowLeft, FiEdit3, FiUser } from 'react-icons/fi' // Icons
 import VideoPlayer from '../components/VideoPlayer'
 import TranscriptViewer from '../components/TranscriptViewer'
-import AvatarGenerator from '../components/AvatarGenerator' // <--- Import the new component
+import AvatarGenerator from '../components/AvatarGenerator' // <--- THE MISSING LINK
 import { useVideo } from '../context/VideoContext'
 import './ResultsPage.css'
 
@@ -141,7 +139,7 @@ function ResultsPage() {
     refreshVoiceover 
   } = useVideo()
   
-  // Tab State
+  // Tab State: 'script' or 'avatar'
   const [activeTab, setActiveTab] = useState('script')
 
   if (!videoUrl && !videoFile) {
@@ -165,49 +163,74 @@ function ResultsPage() {
       
       <div className="editor-layout">
         
-        {/* LEFT PANEL */}
+        {/* --- LEFT PANEL --- */}
         <div className="editor-left-panel">
+          
+          {/* TABS */}
           <div className="editor-tabs">
-            <button className={`tab-btn ${activeTab === 'script' ? 'active' : ''}`} onClick={() => setActiveTab('script')}>
+            <button 
+              className={`tab-btn ${activeTab === 'script' ? 'active' : ''}`}
+              onClick={() => setActiveTab('script')}
+            >
               <FiEdit3 /> Script
             </button>
-            <button className={`tab-btn ${activeTab === 'avatar' ? 'active' : ''}`} onClick={() => setActiveTab('avatar')}>
+            <button 
+              className={`tab-btn ${activeTab === 'avatar' ? 'active' : ''}`}
+              onClick={() => setActiveTab('avatar')}
+            >
               <FiUser /> AI Avatar
             </button>
           </div>
 
+          {/* TAB CONTENT */}
           <div className="tab-content">
-            {/* SCRIPT TAB */}
+            
+            {/* 1. SCRIPT TAB */}
             {activeTab === 'script' && (
               <div className="script-container">
                 <div className="panel-header">
                   <h3>Transcript Editor</h3>
                   <p>Edit the text below to change what is spoken.</p>
                 </div>
-                {transcript ? <TranscriptViewer transcript={transcript} /> : <p>No transcript available.</p>}
                 
+                {transcript ? (
+                  <TranscriptViewer transcript={transcript} />
+                ) : (
+                  <p>No transcript available.</p>
+                )}
+
                 <div className="action-area">
                    {voiceoverProcessing ? (
-                      <button className="btn-action processing" disabled>Applying Voiceover...</button>
+                      <button className="btn-action processing" disabled>
+                        <div className="spinner-small"></div> Applying Voiceover...
+                      </button>
                    ) : (
-                      <button className="btn-action primary" onClick={refreshVoiceover}>Refresh Voiceover</button>
+                      <button className="btn-action primary" onClick={refreshVoiceover}>
+                        Refresh Voiceover
+                      </button>
                    )}
                    {voiceoverApplied && <span className="success-tag">✅ Updated</span>}
                 </div>
               </div>
             )}
 
-            {/* AVATAR TAB - THIS IS THE NEW PART */}
+            {/* 2. AVATAR TAB (Connects to your new file) */}
             {activeTab === 'avatar' && (
-              <AvatarGenerator onBack={() => setActiveTab('script')} />
+              <AvatarGenerator 
+                onBack={() => setActiveTab('script')}
+              />
             )}
+
           </div>
         </div>
         
-        {/* RIGHT PANEL */}
+        {/* --- RIGHT PANEL --- */}
         <div className="editor-right-panel">
           <div className="video-wrapper">
-            <VideoPlayer src={processedVideoUrl || videoUrl} title={videoFile?.name} />
+            <VideoPlayer 
+              src={processedVideoUrl || videoUrl} 
+              title={videoFile?.name} 
+            />
           </div>
         </div>
 
