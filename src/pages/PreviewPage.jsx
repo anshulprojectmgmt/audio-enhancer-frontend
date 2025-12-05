@@ -415,18 +415,20 @@ function PreviewPage() {
           </motion.button>
 
           {processedVideoUrl && (
-            <motion.a
-              href={processedVideoUrl}
-              download="processed-video.mp4"
-              className="download-button"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <FaDownload />
-              <span>Download Video</span>
-            </motion.a>
-          )}
+              <motion.a
+                href={processedVideoUrl}
+                download="processed-video.mp4"
+                target="_blank"                  // <--- OPENS IN NEW TAB
+                rel="noopener noreferrer"        // <--- SECURITY BEST PRACTICE
+                className="download-button"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <FaDownload />
+                <span>Download Video</span>
+              </motion.a>
+            )}
         </div>
       </div>
 
