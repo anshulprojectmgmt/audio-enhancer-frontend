@@ -119,14 +119,13 @@
 
 
 
-
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FiArrowLeft, FiEdit3, FiMic, FiUser, FiZoomIn } from 'react-icons/fi' // Icons for tabs
+import { FiArrowLeft, FiEdit3, FiMic, FiUser, FiZoomIn } from 'react-icons/fi' 
 import VideoPlayer from '../components/VideoPlayer'
 import TranscriptViewer from '../components/TranscriptViewer'
-import AvatarGenerator from '../components/AvatarGenerator' // Your new component
+import AvatarGenerator from '../components/AvatarGenerator' // <--- Import the new component
 import { useVideo } from '../context/VideoContext'
 import './ResultsPage.css'
 
@@ -135,17 +134,16 @@ function ResultsPage() {
   const { 
     videoUrl, 
     videoFile, 
-    processedVideoUrl, // Use this for the player
+    processedVideoUrl, 
     transcript, 
     voiceoverProcessing, 
     voiceoverApplied,
     refreshVoiceover 
   } = useVideo()
   
-  // Tab State: 'script' | 'voice' | 'zoom' | 'avatar'
+  // Tab State
   const [activeTab, setActiveTab] = useState('script')
 
-  // Redirect if no video
   if (!videoUrl && !videoFile) {
     navigate('/')
     return null
@@ -159,97 +157,57 @@ function ResultsPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <button 
-          className="back-button"
-          onClick={() => navigate('/')}
-        >
-          <FiArrowLeft />
-          <span>Back to Upload</span>
+        <button className="back-button" onClick={() => navigate('/')}>
+          <FiArrowLeft /> <span>Back to Upload</span>
         </button>
-        
-        <div className="header-content">
-          <h1>Video Editor</h1>
-        </div>
+        <div className="header-content"><h1>Video Editor</h1></div>
       </motion.div>
       
       <div className="editor-layout">
         
-        {/* --- LEFT PANEL: TABS & TOOLS --- */}
+        {/* LEFT PANEL */}
         <div className="editor-left-panel">
-          
-          {/* Tab Navigation */}
           <div className="editor-tabs">
-            <button 
-              className={`tab-btn ${activeTab === 'script' ? 'active' : ''}`}
-              onClick={() => setActiveTab('script')}
-            >
+            <button className={`tab-btn ${activeTab === 'script' ? 'active' : ''}`} onClick={() => setActiveTab('script')}>
               <FiEdit3 /> Script
             </button>
-            <button 
-              className={`tab-btn ${activeTab === 'avatar' ? 'active' : ''}`}
-              onClick={() => setActiveTab('avatar')}
-            >
+            <button className={`tab-btn ${activeTab === 'avatar' ? 'active' : ''}`} onClick={() => setActiveTab('avatar')}>
               <FiUser /> AI Avatar
             </button>
-            {/* Placeholders for future features */}
-            <button className="tab-btn disabled"><FiMic /> AI Voice</button>
-            <button className="tab-btn disabled"><FiZoomIn /> Zoom</button>
           </div>
 
-          {/* Tab Content Area */}
           <div className="tab-content">
-            
-            {/* 1. SCRIPT TAB */}
+            {/* SCRIPT TAB */}
             {activeTab === 'script' && (
               <div className="script-container">
                 <div className="panel-header">
                   <h3>Transcript Editor</h3>
                   <p>Edit the text below to change what is spoken.</p>
                 </div>
+                {transcript ? <TranscriptViewer transcript={transcript} /> : <p>No transcript available.</p>}
                 
-                {transcript ? (
-                  <TranscriptViewer transcript={transcript} />
-                ) : (
-                  <p>No transcript available.</p>
-                )}
-
                 <div className="action-area">
                    {voiceoverProcessing ? (
-                      <button className="btn-action processing" disabled>
-                        <div className="spinner-small"></div> Applying Voiceover...
-                      </button>
+                      <button className="btn-action processing" disabled>Applying Voiceover...</button>
                    ) : (
-                      <button className="btn-action primary" onClick={refreshVoiceover}>
-                        Refresh Voiceover
-                      </button>
+                      <button className="btn-action primary" onClick={refreshVoiceover}>Refresh Voiceover</button>
                    )}
                    {voiceoverApplied && <span className="success-tag">✅ Updated</span>}
                 </div>
               </div>
             )}
 
-            {/* 2. AVATAR TAB */}
+            {/* AVATAR TAB - THIS IS THE NEW PART */}
             {activeTab === 'avatar' && (
-              <AvatarGenerator 
-                onBack={() => setActiveTab('script')}
-              />
+              <AvatarGenerator onBack={() => setActiveTab('script')} />
             )}
-
           </div>
         </div>
         
-        {/* --- RIGHT PANEL: VIDEO PLAYER --- */}
+        {/* RIGHT PANEL */}
         <div className="editor-right-panel">
           <div className="video-wrapper">
-            {/* We play processedVideoUrl if available, else original videoUrl */}
-            <VideoPlayer 
-              src={processedVideoUrl || videoUrl} 
-              title={videoFile?.name} 
-            />
-          </div>
-          <div className="video-info">
-             <h3>Preview</h3>
-             <p>{processedVideoUrl ? "Playing Enhanced Video" : "Playing Original Video"}</p>
+            <VideoPlayer src={processedVideoUrl || videoUrl} title={videoFile?.name} />
           </div>
         </div>
 
