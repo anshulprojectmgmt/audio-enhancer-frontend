@@ -158,7 +158,7 @@ function ResultsPage() {
         <button className="back-button" onClick={() => navigate('/')}>
           <FiArrowLeft /> <span>Back to Upload</span>
         </button>
-        <div className="header-content"><h1>Video Editor</h1></div>
+        <div className="header-content"><h1>Video Editor Testing123</h1></div>
       </motion.div>
       
       <div className="editor-layout">
