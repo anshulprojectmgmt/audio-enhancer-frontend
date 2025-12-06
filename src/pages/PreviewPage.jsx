@@ -335,6 +335,7 @@ import VideoPlayer from '../components/VideoPlayer'
 import TranscriptViewer from '../components/TranscriptViewer'
 import AvatarGenerator from '../components/AvatarGenerator'
 import { useVideo } from '../context/VideoContext'
+import VoiceManager from '../components/VoiceManager' 
 import './PreviewPage.css'
 
 function PreviewPage() {
