@@ -90,7 +90,7 @@ const VoiceManager = () => {
               </div>
             ) : (
               <div className="upload-placeholder">
-                <p>Upload a clean voice sample (WAV/MP3)</p>
+                <p>Upload a clean voice sample (WAV)</p>
                 <button 
                   className="btn-secondary small" 
                   onClick={() => fileInputRef.current.click()}
