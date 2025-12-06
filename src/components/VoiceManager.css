@@ -4,57 +4,81 @@
 }
 
 .voice-header h3 { margin: 0 0 5px 0; font-size: 1.1rem; }
-.voice-header p { color: #888; font-size: 0.9rem; margin-bottom: 1.5rem; }
+.voice-header p { color: #9ca3af; font-size: 0.9rem; margin-bottom: 1.5rem; }
 
 .voice-options {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 1.5rem;
 }
 
+/* --- CARD STYLES --- */
 .voice-card {
   display: flex;
   align-items: center;
   gap: 15px;
-  padding: 12px 16px;
-  background-color: #2a2a2a;
-  border: 2px solid #333;
-  border-radius: 8px;
+  padding: 16px;
+  background-color: #27272a; /* Neutral Dark Gray */
+  border: 1px solid #3f3f46; /* Subtle Border */
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s;
-}
-
-.voice-card:hover { border-color: #555; }
-.voice-card.selected { border-color: #2563eb; background-color: #2563eb11; }
-
-.voice-icon {
-  font-size: 1.2rem;
-  color: #888;
-}
-.voice-card.selected .voice-icon { color: #2563eb; }
-
-.voice-info { flex: 1; }
-.voice-info h4 { margin: 0; font-size: 0.95rem; color: #fff; }
-.voice-info p { margin: 2px 0 0 0; font-size: 0.8rem; color: #888; }
-
-.radio-circle {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 2px solid #555;
+  transition: all 0.2s ease;
   position: relative;
 }
 
+.voice-card:hover {
+  background-color: #3f3f46; /* Slightly lighter on hover */
+}
+
+/* --- SELECTED STATE (Cleaner) --- */
+.voice-card.selected {
+  border-color: #3b82f6; /* Bright Blue Border */
+  background-color: #27272a; /* Keep background dark (No blue tint) */
+  box-shadow: 0 0 0 1px #3b82f6; /* Double border effect for clarity */
+}
+
+.voice-icon {
+  font-size: 1.2rem;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #18181b;
+  border-radius: 8px;
+}
+
+.voice-card.selected .voice-icon {
+  color: #60a5fa; /* Light Blue Icon when selected */
+  background-color: #1e3a8a; /* Dark Blue Icon Background */
+}
+
+.voice-info { flex: 1; }
+.voice-info h4 { margin: 0; font-size: 0.95rem; color: #fff; font-weight: 500; }
+.voice-info p { margin: 4px 0 0 0; font-size: 0.8rem; color: #9ca3af; }
+
+/* --- RADIO BUTTON --- */
+.radio-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #52525b;
+  position: relative;
+  transition: all 0.2s;
+}
+
 .voice-card.selected .radio-circle {
-  border-color: #2563eb;
+  border-color: #3b82f6;
+  background-color: #3b82f6; /* Fill the circle blue */
 }
 
 .voice-card.selected .radio-circle::after {
   content: '';
-  width: 10px;
-  height: 10px;
-  background-color: #2563eb;
+  width: 8px;
+  height: 8px;
+  background-color: #fff; /* White dot in center */
   border-radius: 50%;
   position: absolute;
   top: 50%;
@@ -62,49 +86,74 @@
   transform: translate(-50%, -50%);
 }
 
-/* Upload Area */
+/* --- UPLOAD AREA --- */
 .custom-upload-area {
   margin-top: 1rem;
   animation: fadeIn 0.3s ease;
 }
 
 .upload-box {
-  background-color: #252525;
-  border: 1px dashed #444;
+  background-color: #18181b;
+  border: 1px dashed #52525b;
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 2rem;
   text-align: center;
+  transition: border-color 0.2s;
 }
 
-.upload-placeholder p { margin-bottom: 10px; color: #ccc; font-size: 0.9rem; }
-.upload-placeholder small { display: block; margin-top: 10px; color: #666; font-size: 0.75rem; }
+.upload-box:hover {
+  border-color: #71717a;
+}
+
+.upload-placeholder p { margin-bottom: 12px; color: #e4e4e7; font-size: 0.9rem; }
+.upload-placeholder small { display: block; margin-top: 12px; color: #71717a; font-size: 0.75rem; }
 
 .btn-secondary.small {
   padding: 8px 16px;
   font-size: 0.85rem;
+  background-color: #27272a;
+  border: 1px solid #3f3f46;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-secondary.small:hover {
+  background-color: #3f3f46;
 }
 
 .upload-status.success {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #064e3b; /* Dark Green bg */
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 1px solid #059669;
 }
 
 .file-info {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #4ade80;
+  color: #a7f3d0; /* Light Green text */
+  font-size: 0.9rem;
 }
 
 .btn-text {
   background: none;
   border: none;
-  color: #888;
+  color: #a7f3d0;
   text-decoration: underline;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  opacity: 0.8;
 }
+
+.btn-text:hover { opacity: 1; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-5px); }
