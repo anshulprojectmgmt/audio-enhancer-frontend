@@ -448,21 +448,8 @@ function PreviewPage() {
           
           {/* AI VOICE TAB */}
           {activeTab === 'aiVoice' && (
-            <div className="voice-selector">
-              <div className="voice-selector-header">
-                <label htmlFor="voice-select">Select Voice</label>
-                <select 
-                  id="voice-select"
-                  className="voice-dropdown"
-                  value={selectedVoice}
-                  onChange={(e) => setSelectedVoice(e.target.value)}
-                >
-                  <option value="anshul">Anshul</option>
-                  <option value="ai">AI Voice</option>
-                </select>
-              </div>
-            </div>
-          )}
+              <VoiceManager />
+           )}
           
           {/* ZOOM TAB */}
           {activeTab === 'zoom' && (
