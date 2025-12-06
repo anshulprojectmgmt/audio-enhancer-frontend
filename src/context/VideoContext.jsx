@@ -182,6 +182,11 @@ export function VideoProvider({ children }) {
   const [avatarId, setAvatarId] = useState('')
   const [avatarProcessing, setAvatarProcessing] = useState(false)
   // ------------------------
+  
+  // --- VOICE STATE ---
+  const [voiceMode, setVoiceMode] = useState('default') // 'default' or 'custom'
+  const [customVoiceFile, setCustomVoiceFile] = useState(null)
+  const [isUploadingVoice, setIsUploadingVoice] = useState(false)
 
   const [error, setError] = useState(null)
   const [voiceoverApplied, setVoiceoverApplied] = useState(false)
@@ -252,9 +257,12 @@ export function VideoProvider({ children }) {
       // Show initial loading state
       setError('Processing started... This may take 2-3 minutes.')
       
-      const refreshRes = await axios.post(`${backendUrl}/refresh-voiceover?sheetId=${sheetId}`, {}, {
-        timeout: 600000 // 10 minutes timeout
-      });
+      // Pass the voice_mode ('default' or 'custom') query param
+      const refreshRes = await axios.post(
+        `${backendUrl}/refresh-voiceover?sheetId=${sheetId}&voice_mode=${voiceMode}`, 
+        {}, 
+        { timeout: 600000 }
+      );
       
       setProcessedVideoUrl(refreshRes.data.Final_s3_url);
       setError(null) // Clear any loading messages
@@ -310,6 +318,46 @@ export function VideoProvider({ children }) {
   }
   // --------------------------------------
 
+  // --- CUSTOM VOICE UPLOADER ---
+  const uploadCustomVoice = async (file) => {
+    if (!file) return;
+
+    // 1. Validate Size (7MB Limit)
+    if (file.size > 7 * 1024 * 1024) {
+      setError("File size exceeds 7MB limit.");
+      return false;
+    }
+
+    try {
+      setIsUploadingVoice(true);
+      setError(null);
+
+      // 2. Get Presigned URL from Backend
+      // Note: We use 'sheetId' as the key reference as discussed
+      const authRes = await axios.post(`${backendUrl}/get-upload-url`, {
+        sheetId: sheetId, 
+        contentType: file.type
+      });
+
+      const { upload_url, s3_key } = authRes.data;
+
+      // 3. Upload File to S3 directly
+      await axios.put(upload_url, file, {
+        headers: { 'Content-Type': file.type }
+      });
+
+      setCustomVoiceFile(file); // Success state
+      setIsUploadingVoice(false);
+      return true;
+
+    } catch (err) {
+      setIsUploadingVoice(false);
+      setError('Failed to upload voice sample: ' + err.message);
+      console.error(err);
+      return false;
+    }
+  }
+
   const resetAll = () => {
     if (videoUrl) {
       URL.revokeObjectURL(videoUrl)
@@ -356,6 +404,11 @@ export function VideoProvider({ children }) {
     setAvatarId,
     avatarProcessing,
     generateAvatarVideo,
+    voiceMode,
+    setVoiceMode,
+    customVoiceFile,
+    uploadCustomVoice,
+    isUploadingVoice,
   }
 
   return (
